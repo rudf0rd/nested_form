@@ -15,7 +15,12 @@ module NestedForm
 
   begin
     require 'formtastic'
-    class FormtasticBuilder < (defined?(::Formtastic::FormBuilder) ? Formtastic::FormBuilder : ::Formtastic::SemanticFormBuilder)
+    if defined?(FormtasticBootstrap::FormBuilder)
+      builder = FormtasticBootstrap::FormBuilder
+    end
+    
+    builder ||= defined?(::Formtastic::FormBuilder) ? Formtastic::FormBuilder : ::Formtastic::SemanticFormBuilder
+    class FormtasticBuilder < builder
       include ::NestedForm::BuilderMixin
     end
   rescue LoadError
